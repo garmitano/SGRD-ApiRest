@@ -1,0 +1,126 @@
+@startuml entityDetail
+
+abstract Person{
+    - Long idPerson
+    - int dni
+    - String fullName
+    - String town
+    - String province
+    - String country
+    - String phone
+    - String email
+    - String birthdate
+}
+
+entity Guest{
+    - Long idPerson
+    - GuestTypeEnum type
+    - String detail
+}
+
+entity Employee{
+    - Long idPerson
+    - EmployeeTypeEnum type
+    - String detail
+}
+
+entity RoomType{
+    - Long idRoomType
+    - RoomTypeEnum type
+    - int price
+    - String detail
+}
+
+entity Room{
+    - Long idRoom
+    - RoomType type
+    - RoomStateEnum state
+    - String detail
+}
+
+entity RoomType{
+    - idRoomType
+    - type
+    - detail
+}
+
+entity Payment{
+    - Long idPayment
+    - int amount
+    - String method
+    - Long ticket
+    - Long creditCard
+}
+
+entity Registry{
+    - Long idRegistry
+    - localdate checkin
+    - Long idRoom
+    - localdate checkout
+    - Long idGuest
+    - Long idEmployee
+    - Long idPayment
+    - String numTicket
+}
+
+
+class RegistryDetail{
+    - Long idRegistry
+    - Long idGuest
+}
+
+enum EmployeeTypeEnum{
+    ADMINISTRADOR
+    ENCARGADO
+    SERENO
+    LIMPIEZA
+    AUXILIAR
+    MANTENIMIENTO
+}
+
+enum GuestTypeEnum{
+    CONSUMIDOR_FINAL
+    RESPONSABLE_INSCRIPTO
+    CUENTA_CORRIENTE
+    STIA
+    UTHGRA
+    ATE
+    VIALIDAD
+    CAMIONEROS
+    SEGURIDAD
+    OTRO
+}
+
+enum RoomTypeEnum{
+    SIMPLE
+    DOBLE
+    TRIPLE
+    CUADRUPLE
+    ESPECIAL
+}
+
+enum RoomStateEnum{
+    LIBRE
+    OCUPADA
+    RESERVADA
+    EN_MANTENIMIENTO
+}
+
+Registry "1" *-down- "1" RegistryDetail
+Registry "1" *-- "1" Room
+Payment "n" }-left-* "1" Registry
+
+Room "1" *-- "1" RoomType
+
+RegistryDetail "1" *--{ "n" Guest
+Registry "1" *-- "1" Employee
+
+Person <|-- Guest
+Person <|-- Employee
+
+Employee -- EmployeeTypeEnum
+Guest -- GuestTypeEnum
+RoomType -- RoomTypeEnum
+Room -left- RoomStateEnum
+
+@enduml

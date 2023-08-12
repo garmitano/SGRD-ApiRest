@@ -1,0 +1,59 @@
+@startuml entityDetail
+
+entity Person{
+    - Long idPerson
+    - int dni
+    - String fullName
+    - String town
+    - String province
+    - String country
+    - String phone
+    - String email
+    - String birthdate
+}
+
+entity GuestType{
+    - Long idGuestType
+    - String type
+    - String detail
+}
+
+entity Employee{
+    - Long idEmployee
+    - Long idPerson
+    - String type
+}
+
+entity RoomType{
+    - Long idRoomType
+    - String type
+    - int price
+    - String detail
+}
+
+entity Payment{
+    - Long idPayment
+    - int amount
+    - String method
+    - Long ticket
+    - Long creditCard
+}
+
+
+entity Book{
+    - Long idBook
+    - localdate checkin
+    - Long idRoomType
+    - Long idPerson
+    - Long idGuestType
+    - Long idPayment
+    - String state
+    - String detail
+}
+
+Book -left- Person
+Book -right- RoomType
+Book -- Employee
+Payment }-- Book
+Book --- GuestType
+@enduml
