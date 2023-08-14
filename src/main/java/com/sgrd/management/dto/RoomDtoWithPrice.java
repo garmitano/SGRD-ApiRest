@@ -1,7 +1,5 @@
 package com.sgrd.management.dto;
 
-import com.sgrd.management.model.Enum.RoomStateEnum;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomDto {
+public class RoomDtoWithPrice {
     private int nro_room;
-    private RoomStateEnum state;
-    private String detail;
+    private double price;
+    private String type;
 }
