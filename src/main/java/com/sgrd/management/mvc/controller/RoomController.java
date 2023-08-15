@@ -20,18 +20,18 @@ public class RoomController {
     private RoomServiceImpl service;
 
     @GetMapping("/rooms")
-    public ResponseEntity<List<RoomDtoWithPrice>> listAllRooms() throws Exception {
-        return ResponseEntity.ok(service.listFree());
+    public ResponseEntity<List<RoomDto>> listRooms() throws Exception {
+        return ResponseEntity.ok(service.listRooms());
     }
 
-    @GetMapping("/rooms/free")
-    public ResponseEntity<List<RoomDtoWithPrice>> listFreeRooms() throws Exception {
-        return ResponseEntity.ok(service.listFreeWithPrice());
+    @GetMapping("/rooms/vacant")
+    public ResponseEntity<List<RoomDtoWithPrice>> listVacant() throws Exception {
+        return ResponseEntity.ok(service.listVacant());
     }
 
-    @GetMapping("/rooms/free/{id}")
-    public ResponseEntity<RoomDto> getRoomDtoById(@PathVariable Long id) throws Exception {
-        return ResponseEntity.ok(service.getRoomDtoById(id));
+    @GetMapping("/rooms/occupied")
+    public ResponseEntity<List<RoomDto>> listOccupied() throws Exception {
+        return ResponseEntity.ok(service.listOccupied());
     }
 
     @GetMapping("/rooms/{nro}")

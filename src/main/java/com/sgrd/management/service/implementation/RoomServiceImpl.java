@@ -1,5 +1,6 @@
 package com.sgrd.management.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,66 +13,68 @@ import com.sgrd.management.dto.RoomDtoWithPrice;
 import com.sgrd.management.model.Room;
 import com.sgrd.management.repository.IRoomRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
-public class RoomServiceImpl implements IServiceBase<Room> {
+public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     private IRoomRepository repository;
+    ModelMapper mapper = new ModelMapper();
 
-    @Override
-    @Transactional
-    public List<Room> listAll() throws Exception {
+    public List<RoomDto> listRooms() throws Exception {
         try {
             List<Room> rooms = repository.findAll();
-            return rooms;
+            List<RoomDto> listRoomDto = new ArrayList<>();
+            for (Room room : rooms) {
+                listRoomDto.add(mapper.map(room, RoomDto.class));
+            }
+            return listRoomDto;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-    public List<RoomDtoWithPrice> listFree() throws Exception {
+    public List<RoomDtoWithPrice> listVacant() throws Exception {
         try {
-            ModelMapper mapper = new ModelMapper();
-            List<Room> rooms = repository.freeRooms();
-            return rooms.stream()
-                    .map(room -> mapper.map(room, RoomDtoWithPrice.class))
-                    .collect(Collectors.toList());
+            List<Object[]> listRooms = repository.freeRoomsWithPrice();
+            List<RoomDtoWithPrice> listRoomDto = new ArrayList<>();
+            for (Object[] room : listRooms) {
+                int nro = (Integer) room[0];
+                double price = (Double) room[1];
+                String type = (String) room[2];
 
+                RoomDtoWithPrice dto = new RoomDtoWithPrice();
+                dto.setNro_room(nro);
+                dto.setPrice(price);
+                dto.setType(type);
+
+                listRoomDto.add(dto);
+
+            }
+            return listRoomDto;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
+        public List<RoomDto> listOccupied() throws Exception {
+        try {
+            List<Room> rooms = repository.listOccupied();
+            List<RoomDto> listRoomDto = new ArrayList<>();
+            for (Room room : rooms) {
+                listRoomDto.add(mapper.map(room, RoomDto.class));
+            }   
+            return listRoomDto;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
     public List<RoomDtoWithPrice> listFreeWithPrice() throws Exception {
-        ModelMapper mapper = new ModelMapper();
+
         try {
-            List<Room> rooms = repository.freeRoomsWithPrice();
+            List<Object[]> rooms = repository.freeRoomsWithPrice();
             return rooms.stream()
                     .map(room -> mapper.map(room, RoomDtoWithPrice.class))
                     .collect(Collectors.toList());
-
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
-
-    @Override
-    @Transactional
-    public Room addNewOne(Room entity) throws Exception {
-        try {
-            return repository.save(entity);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
-
-    @Override
-    public Room getOneById(Long id) throws Exception {
-        try {
-
-            return repository.getReferenceById(id);
 
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -99,18 +102,33 @@ public class RoomServiceImpl implements IServiceBase<Room> {
     }
 
     @Override
-    @Transactional
-    public Room updateOne(Room entity, Long id) throws Exception {
-        try {
-            return repository.save(entity);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public List<Room> listAllRoom() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'listAllRoom'");
     }
 
     @Override
-    public void deleteOne(Long id) {
-        repository.deleteById(id);
+    public Room addNewRoom(Room room) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addNewRoom'");
+    }
+
+    @Override
+    public Room getRoomById(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomById'");
+    }
+
+    @Override
+    public Room updateRoom(Room room) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateRoom'");
+    }
+
+    @Override
+    public void deleteRoom(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteRoom'");
     }
 
 }
