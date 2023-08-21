@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.sgrd.management.dto.RoomDto;
 import com.sgrd.management.model.Room;
 
 public interface IRoomRepository extends JpaRepository<Room, Long> {
@@ -22,6 +23,9 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
                                         + "WHERE hab.state='LIBRE'", 
                                         nativeQuery = true)
     List<Object[]> freeRoomsWithPrice();
+    
+    @Query(value = "SELECT NEW com.sgrd.management.dto.RoomDto(room.nro_room, room.state, room.detail, room.type.type, room.type.price) FROM Room room ORDER BY room.nro_room")
+    List<RoomDto> listRooms();
 
     @Query(value = "SELECT hab.id_room, hab.nro_room, hab.detail, hab.state, hab.fk_room_type FROM habitaciones hab WHERE hab.nro_room = ?1", nativeQuery = true)
     Room getRoomByNroRoom(int nro);

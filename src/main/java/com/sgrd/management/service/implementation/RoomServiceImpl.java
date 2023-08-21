@@ -1,10 +1,13 @@
 package com.sgrd.management.service.implementation;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.modelmapper.internal.bytebuddy.description.type.TypeVariableToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +21,19 @@ public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     private IRoomRepository repository;
-    ModelMapper mapper = new ModelMapper();
+
+    @Autowired
+    private ModelMapper mapper;
 
     public List<RoomDto> listRooms() throws Exception {
         try {
-            List<Room> rooms = repository.findAll();
-            List<RoomDto> listRoomDto = new ArrayList<>();
-            for (Room room : rooms) {
-                listRoomDto.add(mapper.map(room, RoomDto.class));
-            }
-            return listRoomDto;
+            // List<Room> rooms = repository.listRooms();
+            // List<RoomDto> listRoomDto = new ArrayList<>();
+            // for (Room room : rooms) {
+            //     listRoomDto.add(mapper.map(room, RoomDto.class));
+            // }
+            // return listRoomDto;
+            return repository.listRooms();
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -69,12 +75,11 @@ public class RoomServiceImpl implements IRoomService {
         }
     }
     public List<RoomDtoWithPrice> listFreeWithPrice() throws Exception {
-
         try {
             List<Object[]> rooms = repository.freeRoomsWithPrice();
-            return rooms.stream()
-                    .map(room -> mapper.map(room, RoomDtoWithPrice.class))
-                    .collect(Collectors.toList());
+
+   
+            return null;
 
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -84,7 +89,6 @@ public class RoomServiceImpl implements IRoomService {
     public Room getOneByNro(int nro) throws Exception {
         try {
             return repository.getRoomByNroRoom(nro);
-
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

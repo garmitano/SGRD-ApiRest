@@ -28,6 +28,10 @@ public class RoomController {
     public ResponseEntity<List<RoomDtoWithPrice>> listVacant() throws Exception {
         return ResponseEntity.ok(service.listVacant());
     }
+    @GetMapping("/rooms/vacantprice")
+    public ResponseEntity<List<RoomDtoWithPrice>> listVacantPrice() throws Exception {
+        return ResponseEntity.ok(service.listFreeWithPrice());
+    }
 
     @GetMapping("/rooms/occupied")
     public ResponseEntity<List<RoomDto>> listOccupied() throws Exception {
